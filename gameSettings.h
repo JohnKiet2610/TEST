@@ -8,6 +8,7 @@
 #include "string"
 #include "iostream"
 #include "player.h"
+#include "Companies.h"
 using namespace std;
 class player;
 class gameSettings {
@@ -28,6 +29,7 @@ public:
     int getRequiredMoney() const;
     int getTotalDays() const;
     int getInitialCorporatePowers() const;
+    int getMaxCompanies(GameMode mode);
     static int getInitialMoney(GameMode mode);
     static int getInitialCorporatePowers(GameMode mode);
     void initializePlayer(player& p) const;

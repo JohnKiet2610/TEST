@@ -1,23 +1,23 @@
 
 #include "gameSettings.h"
+GameMode gameSettings::getGameMode() const {
+    return mode;
+}
 gameSettings::gameSettings(GameMode mode): mode(mode) {
     switch (mode) {
-        case Easy:
-            initial_money = 1000;
+        case 4: //Easy
             required_companies = 3;
             required_money = 500;
             total_days = 40;
             initial_corporate_powers = 6;
             break;
-        case Tricky:
-            initial_money = 900;
+        case 5: //Tricky
             required_companies = 4;
             required_money = 600;
             total_days = 50;
             initial_corporate_powers = 5;
             break;
-        case Hard:
-            initial_money = 800;
+        case 6: //Hard
             required_companies = 5;
             required_money = 700;
             total_days = 60;
@@ -27,11 +27,11 @@ gameSettings::gameSettings(GameMode mode): mode(mode) {
 }
 int gameSettings::getInitialMoney(GameMode mode) {
     switch (mode) {
-        case Easy:
+        case 4: //Easy
             return 1000;
-        case Tricky:
+        case 5: //Tricky
             return 900;
-        case Hard:
+        case 6: //Hard
             return 800;
         default:
             return 0;
@@ -40,12 +40,24 @@ int gameSettings::getInitialMoney(GameMode mode) {
 
 int gameSettings::getInitialCorporatePowers(GameMode mode) {
     switch (mode) {
-        case Easy:
+        case 4: //Easy
             return 6;
-        case Tricky:
+        case 5: //Tricky
             return 5;
-        case Hard:
+        case 6: //Hard
             return 4;
+        default:
+            return 0;
+    }
+}
+int gameSettings::getMaxCompanies(GameMode mode) {
+    switch (mode) {
+        case 4: //Easy
+            return 12;
+        case 5: //Tricky
+            return 15;
+        case 6: //Hard
+            return 18;
         default:
             return 0;
     }
@@ -67,11 +79,10 @@ void gameSettings::initializePlayer(player& p) const {
     p.setMoney(getInitialMoney(mode));
     p.setPowerUsesLeft(getInitialCorporatePowers(mode));
 }
-GameMode gameSettings::getGameMode() const {
-    return mode;
-}
+
 void gameSettings::getDetails() const {
     cout << "Required Companies to Win: " << getRequiredCompanies() << endl;
     cout << "Required Money to Win: " << getRequiredMoney() << endl;
-    cout << "Total Days to Play: " << getTotalDays() << endl;  // assuming you have a method to get this
+    cout << "Total Days to Play: " << getTotalDays() << endl;
+    cout << "Total Corporate Power can use: "<< getInitialCorporatePowers() << endl;// assuming you have a method to get this
 }
