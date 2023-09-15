@@ -29,6 +29,7 @@ public:
     int getRequiredMoney() const;
     int getTotalDays() const;
     int getInitialCorporatePowers() const;
+    int getDay() const;
     int getMaxCompanies(GameMode mode);
     static int getInitialMoney(GameMode mode);
     static int getInitialCorporatePowers(GameMode mode);

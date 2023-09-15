@@ -20,13 +20,13 @@ GameMode player::getMode() const {
 }
 void player::viewPlayerOwnedCompanies() {
     if (companiesOwned.empty()) {
-        cout << "You do not own any companies yet." << std::endl;
+        cout << "You do not own any companies yet." << endl;
         return;
     }
 
     cout << "Companies owned by player: " << endl;
     for (const auto& company : companiesOwned) {
-        cout << "- " << company.getName() << endl;  // Assuming Company has a getName() method
+        cout << company.getName() << endl;  // Assuming Company has a getName() method
     }
 }
 int player::getCompaniesOwned() const {
@@ -38,17 +38,30 @@ int player::getTotalShare() const {
 void player::setPowerUsesLeft(int power) {
     this->power_uses_left = power;
 }
+//void player::addCompany(char shortcut) {
+//    auto it = find(Company::companyShortcutList.begin(), Company::companyShortcutList.end(), shortcut);
+//    if (it != Company::companyShortcutList.end()) {
+//        int index = distance(Company::companyShortcutList.begin(), it);
+//        companiesOwned.push_back(Company::allCompanies[index]);
+//        cout << "You now own the company " << Company::allCompanies[index].getName() << "." << endl;
+//    } else {
+//        cout << "Invalid company shortcut." << endl;
+//    }
+//}
 void player::addCompany(char shortcut) {
-    auto it = std::find(Company::companyShortcutList.begin(), Company::companyShortcutList.end(), shortcut);
+    auto it = find(Company::companyShortcutList.begin(), Company::companyShortcutList.end(), shortcut);
     if (it != Company::companyShortcutList.end()) {
-        int index = std::distance(Company::companyShortcutList.begin(), it);
+        int index = distance(Company::companyShortcutList.begin(), it);
         companiesOwned.push_back(Company::allCompanies[index]);
-        std::cout << "You now own the company " << Company::allCompanies[index].getName() << "." << std::endl;
+
+        // Update the owner field of the Company
+        Company::allCompanies[index].setOwner(this->name);  // Assuming 'name' is the field containing the player's name
+
+        cout << "You now own the company " << Company::allCompanies[index].getName() << endl;
     } else {
-        std::cout << "Invalid company shortcut." << std::endl;
+        cout << "Invalid company shortcut." << endl;
     }
 }
-
 GameMode player::getGameMode() const {
     return settings->getGameMode();
 }

@@ -33,8 +33,6 @@ int gameSettings::getInitialMoney(GameMode mode) {
             return 900;
         case 6: //Hard
             return 800;
-        default:
-            return 0;
     }
 }
 
@@ -64,6 +62,9 @@ int gameSettings::getMaxCompanies(GameMode mode) {
 }
 int gameSettings::getRequiredCompanies() const {
     return required_companies;
+}
+int gameSettings::getDay() const {
+    return 1;
 }
 int gameSettings::getRequiredMoney() const {
     return required_money;
