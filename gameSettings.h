@@ -22,6 +22,8 @@ private:
     GameMode mode;
 public:
     gameSettings(GameMode mode);  // Constructor to initialize based on game mode
+    /// Destructor
+    ~gameSettings() = default;
     // Getter functions for various settings
     GameMode getGameMode() const;
     void getDetails() const;

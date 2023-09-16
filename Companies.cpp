@@ -1,13 +1,13 @@
 #include "Companies.h"
-// Default Constructor
+/// Default Constructor
 Company::Company() : rank(0), name(""), power(""), owner("None"), cost(0) {}
-// Overloaded Constructor
+/// Overloaded Constructor
 Company::Company(int rank, const string& name, const string& power, const string& owner, int cost)
         : rank(rank), name(name), power(power), owner(owner), cost(cost) {}
-// List
+/// List
 vector<char> Company::companyShortcutList;
 vector<Company> Company::allCompanies;
-// Getter Functions
+/// Getter Functions
 int Company::getRank() const {
     return rank;
 }
@@ -24,7 +24,16 @@ const string& Company::getOwner() const {
     }
     return owner;
 }
-// Setter Functions
+int Company::getCost(char companyChar) {
+    // Assuming companyShortcutList and allCompanies are populated
+    for (size_t i = 0; i < Company::companyShortcutList.size(); ++i) {
+        if (Company::companyShortcutList[i] == companyChar) {
+            return Company::allCompanies[i].cost;  // Directly access the 'cost' member variable
+        }
+    }
+    return -1;  // Return -1 if the company is not found
+}
+/// Setter Functions
 void Company::setRank(int rank) {
     this->rank = rank;
 }
@@ -51,6 +60,11 @@ void Company::display() const {
 vector<Company> Company::readCompaniesFromFile(const string& filename, GameMode mode, gameSettings& settings) {
     vector<Company> companies;
     ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error: Could not open the file " << filename << endl;
+        /// Handle the error, maybe return an empty vector or exit the program
+        return companies;
+    }
     string line;
     int maxCompanies = settings.getMaxCompanies(mode);
     for (int i = 0; i < maxCompanies && getline(file, line); ++i) {
@@ -81,15 +95,7 @@ void Company::companyShortcut(vector<Company> companies) {
     }
 }
 ///Company cost
-int Company::getCost(char companyChar) {
-    // Assuming companyShortcutList and allCompanies are populated
-    for (size_t i = 0; i < Company::companyShortcutList.size(); ++i) {
-        if (Company::companyShortcutList[i] == companyChar) {
-            return Company::allCompanies[i].cost;  // Directly access the 'cost' member variable
-        }
-    }
-    return -1;  // Return -1 if the company is not found
-}
+
 ///Company level (Bronze, Silver, Gold)
 string Company::getLevel() const {
     if (rank == 1) return "Bronze";

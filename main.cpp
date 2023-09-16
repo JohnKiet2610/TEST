@@ -21,18 +21,18 @@ void clearScreen() {
 void displayTitle() {
     // use this if NOT using the title as a constant
     cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-    cout << "\t    Risky business:: Share market simulation \n";
-    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
+    cout << "\t            Risky business:: Share market simulation \n";
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 }
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-void testPlayer() {
-    // Create a Player object using the overloaded constructor
-    player Player("Alice", GameMode::Tricky, 1000, 2, 50, 5);
-
-    // Print attributes to check if they have been initialized correctly
-    gameSettings settings(Player.getGameMode());
-    settings.initializePlayer(Player);
+char askForLetter(string question) {
+    // ask a single letter response question
+    char userInput = ' ';
+    while (!isalpha(userInput)) {
+        cout << "\n " + question;
+        cin >> userInput;
+    }
+    cin.ignore();
+    return toupper(userInput);
 }
 void displayTextFile(string myFile) {
     // local vars
@@ -48,38 +48,23 @@ void displayTextFile(string myFile) {
     waitForPlayer();
     clearScreen();
 }
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 void gameInterface(gameSettings& settings) {
     cout << "Companies to win: " << settings.getRequiredCompanies();
-    cout << "\t     Min Money: " << settings.getRequiredMoney();
-    cout << "         Day: " << settings.getDay();
-    cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+    cout << "\t          Min Money: " << settings.getRequiredMoney();
+    cout << "                      Day: " << settings.getDay();
+    cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     cout << "Company's name   \tAvailable   Current \t  Company \t Current \n";
     cout << "                 \t shares      value   \t   cost \t  owner\n";
 }
 void userProfile(player& Player) {
-    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-    cout << "\t       " << Player.getName() << "'s Portfolio and Assets" << endl;
-    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    cout << "\t       " << Player.getName() << "'s Portfolio and Assets\n";
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     cout << "Total money: " << Player.getMoney();
     cout << "    Companies owned: " << Player.getCompaniesOwned();
-    cout << "     Total shares: " << Player.getTotalShare() << endl;
-    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-}
-void testCompany(){
-    char companyChar = 'B';  // Replace with the actual character representing a company
-    int cost = Company::getCost(companyChar);  // Call the static getCost function
-
-    if (cost != -1.0) {
-        cout << "The cost of the company represented by " << companyChar << " is " << cost << endl;
-    } else {
-        cout << "Company not found." << endl;
-    }
-}
-///Load the companies.txt and generate Random shares
-void initialGame(gameSettings& settings){
-    vector<Company> companies = Company::readCompaniesFromFile("companies.txt", settings.getGameMode(), settings);
-    Company::generateTotalShares();
-
+    cout << "     Total shares: " << Player.getTotalShare() << "\n\n";
 }
 void displayCompany(){
     int index = 1;  // Initialize index counter
@@ -98,14 +83,13 @@ void displayCompanyNameAndCost() {
         int cost = Company::getCost(shortcut);  // Get the cost using the shortcut character
         string owner = company.getOwner();
         cout
-        << company.getName() <<"      "<< company.totalShares <<"          "
-        << company.currentValues <<"            "<< cost <<"            "
-        << owner << endl;
+                << company.getName() <<"      "<< company.totalShares <<"          "
+                << company.currentValues <<"            "<< cost <<"            "
+                << owner << endl;
 
 
     }
 }
-
 void displayRisks() {
     vector<Risk> risks = Risk::readRisksFromFile("risksAdvanced.txt");
     int index = 1;  // Initialize index counter
@@ -115,19 +99,68 @@ void displayRisks() {
         ++index;  // Increment the index
     }
 }
-// Main function
+// ------------ Gameplay Logic Functions ---------------
+void playerAction(){
+    cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    cout << "\t [B]uy   [S]ell    [A]cquire    [P]ower    [R]isk    [Q]uit                   \n";
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    char Choice = askForLetter("What will you do now? ");
+    switch (Choice) {
+        case 'B':
+            cout << "Buy will be implemented.\n";
+            break;
+        case 'S':
+            cout << "Sell will be implemented.\n";
+            break;
+        case 'A':
+            cout << "Acquire will be implemented.\n";
+            break;
+        case 'P':
+            cout << "Power use will be implemented.\n";
+            break;
+        case 'R':
+            cout << "Risk will be implemented.\n";
+            break;
+        case 'Q':
+            cout << "Quitting the game.\n";
+            exit(0); // End the game
+        default:
+            cout << "Invalid option.\n";
+            break;
+    }
+}
+///Load the companies.txt and generate Random shares
+void initialGame(gameSettings& settings){
+    vector<Company> companies = Company::readCompaniesFromFile("companies.txt", settings.getGameMode(), settings);
+    Company::generateTotalShares();
+
+}
+// ------------ Main Function ---------------
 int main() {
     srand(static_cast<unsigned int>(time(0)));
+    /// Testing constructor, initialize all needed function to make the game work
+    player defaultPlayer;
     player Player("Alice", GameMode::Hard, 1000, 2, 50, 5);
-    gameSettings settings(Player.getGameMode());
-    settings.initializePlayer(Player);
+    gameSettings settings(defaultPlayer.getGameMode());
+    settings.initializePlayer(defaultPlayer);
     initialGame(settings);
-    Player.addCompany('A');
-    Player.addCompany('B');
+
+    /// Testing add companies to player
+    defaultPlayer.addCompany('A');
+    defaultPlayer.addCompany('B');
+    ///Display all the risks
+    //displayRisks();
+    ///Display Companies
+    //displayCompany();
+    /// Intro game
+    displayTextFile("RBintro.txt");
+    /// Game UI
     displayTitle();
     gameInterface(settings);
     displayCompanyNameAndCost();
-    userProfile(Player);
-    Player.viewPlayerOwnedCompanies();
+    userProfile(defaultPlayer);
+    defaultPlayer.viewPlayerOwnedCompanies();
+    playerAction();
+
     return 0;
 }

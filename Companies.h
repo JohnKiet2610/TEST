@@ -21,6 +21,8 @@ public:
     // Constructors
     Company();
     Company(int rank, const string& name, const string& power, const string& owner = "None", int cost = 0);
+    /// Destructor
+    ~Company() = default;
 
     // Getter Functions
     int getRank() const;
@@ -28,6 +30,7 @@ public:
     const string& getPower() const;
     const string& getOwner() const;
     string getLevel() const;
+    static int getCost(char companyChar);
 
     // Setter Functions
     void setRank(int rank);
@@ -37,7 +40,6 @@ public:
     void setCost(int cost);
 
     // Other Member Functions
-    static int getCost(char companyChar);
     void display() const;
     static vector<Company> readCompaniesFromFile(const string& filename, GameMode mode, gameSettings& settings);
     static void companyShortcut(vector<Company> companies);

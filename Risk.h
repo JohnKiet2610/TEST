@@ -1,7 +1,3 @@
-//
-// Created by Kiet on 14/09/2023.
-//
-
 #ifndef ASSIGNMENT2_2_RISK_H
 #define ASSIGNMENT2_2_RISK_H
 using namespace std;
@@ -12,6 +8,8 @@ class Risk {
 public:
     Risk();
     Risk(const string& name, const string& attribute, int minValue, int maxValue);
+    /// Destructor
+    ~Risk() = default;
 
     // Getters
     const string& getName() const;
